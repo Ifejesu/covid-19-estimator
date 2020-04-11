@@ -1,4 +1,4 @@
-module.exports = ({
+module.exports = (
   avgDailyIncomeInUSD,
   avgDailyIncomePopulation,
   periodType,
@@ -6,27 +6,21 @@ module.exports = ({
   reportedCases,
   totalHospitalBeds,
   estimationFactor
-}) => {
-  const convertToDays = () => {
-    let days;
-    if (periodType === 'days') {
-      days = timeToElapse;
-    } else if (periodType === 'weeks') {
-      days = timeToElapse * 7;
-    } else {
-      days = timeToElapse * 30;
-    }
-    return days;
-  };
+) => {
+  let estimate;
+  if (periodType === 'months' || periodType === 'month') {
+    estimate = timeToElapse * 30;
+  } else if (periodType === 'weeks' || periodType === 'week') {
+    estimate = timeToElapse * 7;
+  } else {
+    estimate = timeToElapse;
+  }
 
-  const infectionRate = () => {
-    const days = convertToDays() / 3;
-    return 2 ** Math.trunc(days);
-  };
+  const factor = 2 ** Math.trunc(estimate / 3);
 
   const currentlyInfected = reportedCases * estimationFactor;
 
-  const infectionsByRequestedTime = currentlyInfected * infectionRate;
+  const infectionsByRequestedTime = currentlyInfected * factor;
 
   const severeCasesByRequestedTime = Math.trunc(
     infectionsByRequestedTime * 0.15
@@ -44,12 +38,12 @@ module.exports = ({
     infectionsByRequestedTime * 0.02
   );
 
-  const dollarsInFlight = () => {
-    const factor = avgDailyIncomePopulation * avgDailyIncomeInUSD;
-    const days = convertToDays();
-    const res = (infectionsByRequestedTime() * factor) / days;
-    return Math.trunc(res);
-  };
+  const dollarsInFlight = Math.trunc(
+    (infectionsByRequestedTime
+      * avgDailyIncomePopulation
+      * avgDailyIncomeInUSD)
+      / estimate
+  );
 
   const results = {
     currentlyInfected,

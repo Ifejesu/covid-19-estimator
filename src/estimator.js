@@ -11,25 +11,25 @@ const covid19ImpactEstimator = (data) => {
 
   const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = region;
 
-  const impact = estimator({
+  const impact = estimator(
     avgDailyIncomeInUSD,
     avgDailyIncomePopulation,
     periodType,
     timeToElapse,
     reportedCases,
     totalHospitalBeds,
-    estimationFactor: 10
-  });
+    10
+  );
 
-  const severeImpact = estimator({
+  const severeImpact = estimator(
     avgDailyIncomeInUSD,
     avgDailyIncomePopulation,
     periodType,
     timeToElapse,
     reportedCases,
     totalHospitalBeds,
-    estimationFactor: 50
-  });
+    50
+  );
 
   return {
     data,
