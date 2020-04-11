@@ -17,16 +17,13 @@ const Estimator = ({
 };
 
 Estimator.prototype.convertToDays = () => {
-  if (this.periodType === 'days' || this.periodType === 'day') {
-    return this.timeToElapse;
-  }
   if (this.periodType === 'weeks' || this.periodType === 'week') {
     return this.timeToElapse * 7;
   }
   if (this.periodType === 'months' || this.periodType === 'month') {
     return this.timeToElapse * 30;
   }
-  return 0;
+  return this.timeToElapse;
 };
 
 Estimator.prototype.rate = () => {
