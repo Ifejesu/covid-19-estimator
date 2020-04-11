@@ -19,46 +19,36 @@ const Estimator = ({
 Estimator.prototype.convertToDays = () => {
   if (this.periodType === 'days' || this.periodType === 'day') {
     return this.timeToElapse;
-  }
-  else if (this.periodType === 'weeks' || this.periodType === 'week') {
+  } else if (this.periodType === 'weeks' || this.periodType === 'week') {
     return this.timeToElapse * 7;
-  }
-  else if (this.periodType === 'months' || this.periodType === 'month') {
+  } else if (this.periodType === 'months' || this.periodType === 'month') {
     return this.timeToElapse * 30;
   }
-  else {
-      return 0;
-    }
 };
 
 Estimator.prototype.rateOfInfection = () => {
   const days = this.convertToDays() / 3;
-
   return 2 ** Math.trunc(days);
 };
 
-Estimator.prototype.currentlyInfected = () => {
-  return this.reportedCases * this.estimationFactor;
-};
-Estimator.prototype.infectionsByRequestedTime = () => {
-  return this.currentlyInfected() * this.rateOfInfection();
-};
-Estimator.prototype.severeCasesByRequestedTime = () => {
-  return Math.trunc(this.infectionsByRequestedTime() * 0.15);
-};
-Estimator.prototype.hospitalBedsByRequestedTime = () => {
-  return Math.trunc(
-    this.totalHospitalBeds * 0.35 - this.severeCasesByRequestedTime()
-  );
-};
+Estimator.prototype.currentlyInfected = () =>
+  this.reportedCases * this.estimationFactor;
 
-Estimator.prototype.casesForICUByRequestedTime = () => {
-  return Math.trunc(this.infectionsByRequestedTime() * 0.05);
-};
+Estimator.prototype.infectionsByRequestedTime = () =>
+  this.currentlyInfected() * this.rateOfInfection();
 
-Estimator.prototype.casesForVentilatorsByRequestedTime = () => {
-  return Math.trunc(this.infectionsByRequestedTime() * 0.02);
-};
+Estimator.prototype.severeCasesByRequestedTime = () =>
+  Math.trunc(this.infectionsByRequestedTime() * 0.15);
+
+Estimator.prototype.hospitalBedsByRequestedTime = () =>
+  Math.trunc(this.totalHospitalBeds * 0.35 - this.severeCasesByRequestedTime());
+
+Estimator.prototype.casesForICUByRequestedTime = () =>
+  Math.trunc(this.infectionsByRequestedTime() * 0.05);
+
+Estimator.prototype.casesForVentilatorsByRequestedTime = () =>
+  Math.trunc(this.infectionsByRequestedTime() * 0.02);
+
 Estimator.prototype.dollarsInFlight = () => {
   const factor = this.avgDailyIncomePopulation * this.avgDailyIncomeInUSD;
   const days = this.convertToDays();
