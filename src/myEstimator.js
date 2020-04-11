@@ -4,7 +4,7 @@ const Estimator = ({
   periodType,
   timeToElapse,
   reportedCases,
-  tHB,
+  totalHospitalBeds,
   estimationFactor
 }) => {
   const convertToDays = () => {
@@ -33,7 +33,7 @@ const Estimator = ({
   );
 
   const hospitalBedsByRequestedTime = Math.trunc(
-    tHB * 0.35 - severeCasesByRequestedTime
+    totalHospitalBeds * 0.35 - severeCasesByRequestedTime
   );
 
   const casesForICUByRequestedTime = Math.trunc(
