@@ -8,23 +8,25 @@ const Estimator = ({
   estimationFactor
 }) => {
   const convertToDays = () => {
-    if (periodType === 'weeks' || periodType === 'week') {
-      return timeToElapse * 7;
+    let days;
+    if (periodType === 'days') {
+      days = timeToElapse;
+    } else if (periodType === 'weeks') {
+      days = timeToElapse * 7;
+    } else {
+      days = timeToElapse * 30;
     }
-    if (periodType === 'months' || periodType === 'month') {
-      return timeToElapse * 30;
-    }
-    return timeToElapse;
+    return days;
   };
 
-  const rate = () => {
+  const infectionRate = () => {
     const days = convertToDays() / 3;
     return 2 ** Math.trunc(days);
   };
 
   const currentlyInfected = () => reportedCases * estimationFactor;
 
-  const infectionsByRequestedTime = () => currentlyInfected() * rate();
+  const infectionsByRequestedTime = () => currentlyInfected() * infectionRate();
 
   const severeCasesByRequestedTime = () => Math.trunc(infectionsByRequestedTime() * 0.15);
 
