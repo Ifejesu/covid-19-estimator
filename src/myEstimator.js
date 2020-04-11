@@ -24,17 +24,25 @@ const Estimator = ({
     return 2 ** Math.trunc(days);
   };
 
-  const currentlyInfected = () => reportedCases * estimationFactor;
+  const currentlyInfected = reportedCases * estimationFactor;
 
-  const infectionsByRequestedTime = () => currentlyInfected() * infectionRate();
+  const infectionsByRequestedTime = currentlyInfected * infectionRate;
 
-  const severeCasesByRequestedTime = () => Math.trunc(infectionsByRequestedTime() * 0.15);
+  const severeCasesByRequestedTime = Math.trunc(
+    infectionsByRequestedTime * 0.15
+  );
 
-  const hospitalBedsByRequestedTime = () => Math.trunc(tHB * 0.35 - severeCasesByRequestedTime());
+  const hospitalBedsByRequestedTime = Math.trunc(
+    tHB * 0.35 - severeCasesByRequestedTime
+  );
 
-  const casesForICUByRequestedTime = () => Math.trunc(infectionsByRequestedTime() * 0.05);
+  const casesForICUByRequestedTime = Math.trunc(
+    infectionsByRequestedTime * 0.05
+  );
 
-  const casesForVentilatorsByRequestedTime = () => Math.trunc(infectionsByRequestedTime() * 0.02);
+  const casesForVentilatorsByRequestedTime = Math.trunc(
+    infectionsByRequestedTime * 0.02
+  );
 
   const dollarsInFlight = () => {
     const factor = avgDailyIncomePopulation * avgDailyIncomeInUSD;
@@ -43,15 +51,15 @@ const Estimator = ({
     return Math.trunc(res);
   };
 
-  const results = () => ({
-    currentlyInfected: currentlyInfected(),
-    infectionsByRequestedTime: infectionsByRequestedTime(),
-    severeCasesByRequestedTime: severeCasesByRequestedTime(),
-    hospitalBedsByRequestedTime: hospitalBedsByRequestedTime(),
-    casesForICUByRequestedTime: casesForICUByRequestedTime(),
-    casesForVentilatorsByRequestedTime: casesForVentilatorsByRequestedTime(),
-    dollarsInFlight: dollarsInFlight()
-  });
+  const results = {
+    currentlyInfected,
+    infectionsByRequestedTime,
+    severeCasesByRequestedTime,
+    hospitalBedsByRequestedTime,
+    casesForICUByRequestedTime,
+    casesForVentilatorsByRequestedTime,
+    dollarsInFlight
+  };
 
   return results;
 };
