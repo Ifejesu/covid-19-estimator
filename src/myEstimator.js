@@ -19,35 +19,40 @@ const Estimator = ({
 Estimator.prototype.convertToDays = () => {
   if (this.periodType === 'days' || this.periodType === 'day') {
     return this.timeToElapse;
-  } else if (this.periodType === 'weeks' || this.periodType === 'week') {
+  }
+  if (this.periodType === 'weeks' || this.periodType === 'week') {
     return this.timeToElapse * 7;
-  } else if (this.periodType === 'months' || this.periodType === 'month') {
+  }
+  if (this.periodType === 'months' || this.periodType === 'month') {
     return this.timeToElapse * 30;
   }
+  return 0;
 };
 
-Estimator.prototype.rateOfInfection = () => {
+Estimator.prototype.rate = () => {
   const days = this.convertToDays() / 3;
   return 2 ** Math.trunc(days);
 };
 
-Estimator.prototype.currentlyInfected = () =>
-  this.reportedCases * this.estimationFactor;
+Estimator.prototype.currentlyInfected = () => this.reportedCases * this.estimationFactor;
 
-Estimator.prototype.infectionsByRequestedTime = () =>
-  this.currentlyInfected() * this.rateOfInfection();
+Estimator.prototype.infectionsByRequestedTime = () => this.currentlyInfected() * this.rate();
 
-Estimator.prototype.severeCasesByRequestedTime = () =>
+Estimator.prototype.severeCasesByRequestedTime = () => {
   Math.trunc(this.infectionsByRequestedTime() * 0.15);
+};
 
-Estimator.prototype.hospitalBedsByRequestedTime = () =>
+Estimator.prototype.hospitalBedsByRequestedTime = () => {
   Math.trunc(this.totalHospitalBeds * 0.35 - this.severeCasesByRequestedTime());
+};
 
-Estimator.prototype.casesForICUByRequestedTime = () =>
+Estimator.prototype.casesForICUByRequestedTime = () => {
   Math.trunc(this.infectionsByRequestedTime() * 0.05);
+};
 
-Estimator.prototype.casesForVentilatorsByRequestedTime = () =>
+Estimator.prototype.casesForVentilatorsByRequestedTime = () => {
   Math.trunc(this.infectionsByRequestedTime() * 0.02);
+};
 
 Estimator.prototype.dollarsInFlight = () => {
   const factor = this.avgDailyIncomePopulation * this.avgDailyIncomeInUSD;
@@ -56,16 +61,14 @@ Estimator.prototype.dollarsInFlight = () => {
   return Math.trunc(res);
 };
 
-Estimator.prototype.results = () => {
-  return {
-    currentlyInfected: this.currentlyInfected(),
-    infectionsByRequestedTime: this.infectionsByRequestedTime(),
-    severeCasesByRequestedTime: this.severeCasesByRequestedTime(),
-    hospitalBedsByRequestedTime: this.hospitalBedsByRequestedTime(),
-    casesForICUByRequestedTime: this.casesForICUByRequestedTime(),
-    casesForVentilatorsByRequestedTime: this.casesForVentilatorsByRequestedTime(),
-    dollarsInFlight: this.dollarsInFlight()
-  };
-};
+Estimator.prototype.results = () => ({
+  currentlyInfected: this.currentlyInfected(),
+  infectionsByRequestedTime: this.infectionsByRequestedTime(),
+  severeCasesByRequestedTime: this.severeCasesByRequestedTime(),
+  hospitalBedsByRequestedTime: this.hospitalBedsByRequestedTime(),
+  casesForICUByRequestedTime: this.casesForICUByRequestedTime(),
+  casesForVentilatorsByRequestedTime: this.casesForVentilatorsByRequestedTime(),
+  dollarsInFlight: this.dollarsInFlight()
+});
 
 export default Estimator;
