@@ -27,7 +27,8 @@ Estimator.prototype.convertToDays = () => {
 };
 
 Estimator.prototype.rate = () => {
-  const days = this.convertToDays() / 3;
+  let days = 0;
+  days = this.convertToDays() / 3;
   return 2 ** Math.trunc(days);
 };
 
