@@ -1,35 +1,41 @@
-import Estimator from "./myEstimator";
+import Estimator from './myEstimator';
+
 const covid19ImpactEstimator = (data) => {
-    const {
-        region,
-        periodType,
-        timeToElapse,
-        reportedCases,
-        totalHospitalBeds
-    } = data;
-    const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = region;
+  const {
+    region,
+    periodType,
+    timeToElapse,
+    reportedCases,
+    totalHospitalBeds
+  } = data;
 
-    const impact = new Estimator({
-        avgDailyIncomeInUSD,
-        avgDailyIncomePopulation,
-        periodType,
-        timeToElapse,
-        reportedCases,
-        totalHospitalBeds,
-        estimationFactor: 10
-    });
+  const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = region;
 
-    const severeImpact = new Estimator({
-        avgDailyIncomeInUSD,
-        avgDailyIncomePopulation,
-        periodType,
-        timeToElapse,
-        reportedCases,
-        totalHospitalBeds,
-        estimationFactor: 50
-    });
+  const impact = new Estimator({
+    avgDailyIncomeInUSD,
+    avgDailyIncomePopulation,
+    periodType,
+    timeToElapse,
+    reportedCases,
+    totalHospitalBeds,
+    estimationFactor: 10
+  });
 
-    return { data, impact: impact.results(), severeImpact: severeImpact.results() };
+  const severeImpact = new Estimator({
+    avgDailyIncomeInUSD,
+    avgDailyIncomePopulation,
+    periodType,
+    timeToElapse,
+    reportedCases,
+    totalHospitalBeds,
+    estimationFactor: 50
+  });
+
+  return {
+    data,
+    impact: impact.results(),
+    severeImpact: severeImpact.results()
+  };
 };
 
 export default covid19ImpactEstimator;
