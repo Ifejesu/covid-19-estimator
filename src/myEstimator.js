@@ -1,4 +1,4 @@
-const Estimator = ({
+module.exports = ({
   avgDailyIncomeInUSD,
   avgDailyIncomePopulation,
   periodType,
@@ -63,5 +63,3 @@ const Estimator = ({
 
   return results;
 };
-
-export default Estimator;
