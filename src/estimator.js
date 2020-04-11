@@ -1,4 +1,4 @@
-import Estimator from './myEstimator';
+const Estimator = require('./myEstimator');
 
 const covid19ImpactEstimator = (data) => {
   const {
@@ -33,9 +33,9 @@ const covid19ImpactEstimator = (data) => {
 
   return {
     data,
-    impact: impact.results(),
-    severeImpact: severeImpact.results()
+    impact,
+    severeImpact
   };
 };
 
-export default covid19ImpactEstimator;
+module.export = covid19ImpactEstimator;
