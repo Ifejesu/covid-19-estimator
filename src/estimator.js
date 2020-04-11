@@ -1,4 +1,4 @@
-const Estimator = require('./myEstimator');
+const estimator = require('./myEstimator');
 
 const covid19ImpactEstimator = (data) => {
   const {
@@ -11,7 +11,7 @@ const covid19ImpactEstimator = (data) => {
 
   const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = region;
 
-  const impact = new Estimator({
+  const impact = estimator({
     avgDailyIncomeInUSD,
     avgDailyIncomePopulation,
     periodType,
@@ -21,7 +21,7 @@ const covid19ImpactEstimator = (data) => {
     estimationFactor: 10
   });
 
-  const severeImpact = new Estimator({
+  const severeImpact = estimator({
     avgDailyIncomeInUSD,
     avgDailyIncomePopulation,
     periodType,
